@@ -89,6 +89,8 @@ function listen(listMembers) {
         stream.on('tweet', onTweet);
     });
 }
+//Can add more filters / watchers here.
+
 
 // The application itself.
 // Use the tuiter node module to get access to twitter.
