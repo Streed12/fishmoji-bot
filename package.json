@@ -12,8 +12,8 @@
     "url": "https://github.com/Streed12/fishmoji-bot.git"
   },
   "dependencies": {
-    "express": "~4.9.0",
-    "tuiter": "^0.2.14"
+    "tuiter": "~0.2.12",
+    "express": "~4.9.0"
   },
   "devDependencies": {},
   "optionalDependencies": {},
