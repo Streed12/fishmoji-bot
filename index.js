@@ -54,6 +54,12 @@ function onReTweet(err) {
         console.error(err);
     }
 }
+function onFavorite(err) {
+    if(err) {
+        console.error("Favorite failed :(");
+        console.error(err);
+    }
+}
 
 // What to do when we get a tweet.
 function onTweet(tweet) {
@@ -84,7 +90,7 @@ function onTweet(tweet) {
         if(bfGood){
             tu.createFavorite({
                 id: tweet.id_strm
-            }, onReTweet);
+            }, onFavorite);
         } else {
             console.log(tweet);
             console.log("RT: " + tweet.text);
