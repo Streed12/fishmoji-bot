@@ -65,8 +65,8 @@ function onFavorite(err) {
 }
 
 // What to do when we get a tweet.
-function onTweet(tweet) {
-    // console.log(tweet);
+function onTweet(tweet, tag) {
+    console.log(tweet);
     // Reject the tweet if:
     //  1. it's flagged as a retweet
     //  2. it matches our regex rejection criteria
@@ -80,7 +80,7 @@ function onTweet(tweet) {
         return;
     }
     if (regexFilter.test(tweet.text)) {
-        var hashTags = tweet.entities.hashtags;
+        let hashTags = tweet.entities.hashtags;
         var bfGood = false;
         hashTags.forEach(function(ht){
             var term = ht.text.toLowerCase();
@@ -95,16 +95,16 @@ function onTweet(tweet) {
             tu.createFavorite({
                 id: tweet.id_str
             }, onFavorite);
-        } 
-        // if()
-        //     console.log(tweet);
-        //     console.log("RT: " + tweet.text);
-        //     // Note we're using the id_str property since javascript is not accurate
-        //     // for 64bit ints.
-        //     tu.retweet({
-        //         id: tweet.id_str
-        //     }, onReTweet);
-        // }
+        }
+        if(!tag){
+            console.log(tweet);
+            console.log("RT: " + tweet.text);
+            // Note we're using the id_str property since javascript is not accurate
+            // for 64bit ints.
+            tu.retweet({
+                id: tweet.id_str
+            }, onReTweet);
+        }
     }
 }
 
@@ -114,14 +114,17 @@ function listen(listMembers) {
         track: '#bassfishing'
     }, function(stream) {
         console.log("listening to stream");
+        var tag = true;
+        stream.on('tweet', function (tweet){
+            onTweet(tweet, tag);
+        })
+    });
+    tu.filter({
+        follow: listMembers
+    }, function(stream) {
+        console.log("listening to stream");
         stream.on('tweet', onTweet);
     });
-    // tu.filter({
-    //     follow: listMembers
-    // }, function(stream) {
-    //     console.log("listening to stream");
-    //     stream.on('tweet', onTweet);
-    // });
     
 }
 //Can add more filters / watchers here.
