@@ -80,47 +80,48 @@ function onTweet(tweet) {
         return;
     }
     if (regexFilter.test(tweet.text)) {
-        // console.log(tweet);
-        // var hashTags = tweet.entities.hashtags;
-        // var bfGood = false;
-        // hashTags.forEach(function(ht){
-        //     var term = ht.text.toLowerCase();
-        //     console.log(term)
-        //     if(term === 'fishing'){
-        //         bfGood = true;
-        //     }
-        // });
+        var hashTags = tweet.entities.hashtags;
+        var bfGood = false;
+        hashTags.forEach(function(ht){
+            var term = ht.text.toLowerCase();
+            console.log(term)
+            if(term === 'fishing'){
+                bfGood = true;
+            }
+        });
 
-        // if(bfGood){
-        //     console.log(tweet);
-        //     tu.createFavorite({
-        //         id: tweet.id
-        //     }, onFavorite);
-        // } else {
+        if(bfGood){
             console.log(tweet);
-            console.log("RT: " + tweet.text);
-            // Note we're using the id_str property since javascript is not accurate
-            // for 64bit ints.
-            tu.retweet({
-                id: tweet.id_strm
-            }, onReTweet);
+            tu.createFavorite({
+                id: tweet.id
+            }, onFavorite);
+        } 
+        // if()
+        //     console.log(tweet);
+        //     console.log("RT: " + tweet.text);
+        //     // Note we're using the id_str property since javascript is not accurate
+        //     // for 64bit ints.
+        //     tu.retweet({
+        //         id: tweet.id_strm
+        //     }, onReTweet);
+        // }
     }
 }
 
 // Function for listening to twitter streams and retweeting on demand.
 function listen(listMembers) {
-    // tu.filter({
-    //     track: '#bassfishing'
-    // }, function(stream) {
-    //     console.log("listening to stream");
-    //     stream.on('tweet', onTweet);
-    // });
     tu.filter({
-        follow: listMembers
+        track: 'fishing'
     }, function(stream) {
         console.log("listening to stream");
         stream.on('tweet', onTweet);
     });
+    // tu.filter({
+    //     follow: listMembers
+    // }, function(stream) {
+    //     console.log("listening to stream");
+    //     stream.on('tweet', onTweet);
+    // });
     
 }
 //Can add more filters / watchers here.
