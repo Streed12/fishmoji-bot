@@ -56,7 +56,7 @@ function onReTweet(err) {
 }
 
 // What to do when we get a tweet.
-function onTweet(tweet) {
+function onTweet(tweet, type) {
     // Reject the tweet if:
     //  1. it's flagged as a retweet
     //  2. it matches our regex rejection criteria
@@ -70,13 +70,19 @@ function onTweet(tweet) {
         return;
     }
     if (regexFilter.test(tweet.text)) {
-        console.log(tweet);
-        console.log("RT: " + tweet.text);
-        // Note we're using the id_str property since javascript is not accurate
-        // for 64bit ints.
-        tu.retweet({
+        if(type === 'notListMember'){
+            tu.createFavorite({
             id: tweet.id_strm
-        }, onReTweet);
+            }, onReTweet);
+        } else {
+            console.log(tweet);
+            console.log("RT: " + tweet.text);
+            // Note we're using the id_str property since javascript is not accurate
+            // for 64bit ints.
+            tu.retweet({
+                id: tweet.id_strm
+            }, onReTweet);
+        }
     }
 }
 
@@ -87,6 +93,12 @@ function listen(listMembers) {
     }, function(stream) {
         console.log("listening to stream");
         stream.on('tweet', onTweet);
+    });
+    tu.filter({
+        track: '#bassfishing'
+    }, function(stream) {
+        console.log("listening to stream");
+        stream.on('tweet', onTweet(tweet, 'notListMember'));
     });
 }
 //Can add more filters / watchers here.
