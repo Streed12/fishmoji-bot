@@ -63,6 +63,7 @@ function onFavorite(err) {
 
 // What to do when we get a tweet.
 function onTweet(tweet) {
+    console.log(tweet);
     // Reject the tweet if:
     //  1. it's flagged as a retweet
     //  2. it matches our regex rejection criteria
@@ -76,19 +77,21 @@ function onTweet(tweet) {
         return;
     }
     if (regexFilter.test(tweet.text)) {
-
+        console.log(tweet);
         var hashTags = tweet.entities.hashtags;
         var bfGood = false;
         hashTags.forEach(function(ht){
             var term = ht.text.toLowerCase();
-            if(term === 'bassfishing'){
+            console.log(term)
+            if(term === 'fishing'){
                 bfGood = true;
             }
         });
 
         if(bfGood){
+            console.log(tweet);
             tu.createFavorite({
-                id: tweet.id_strm
+                id: tweet.id
             }, onFavorite);
         } else {
             console.log(tweet);
@@ -105,7 +108,7 @@ function onTweet(tweet) {
 // Function for listening to twitter streams and retweeting on demand.
 function listen(listMembers) {
     tu.filter({
-        track: '#bassfishing'
+        track: '#fishing'
     }, function(stream) {
         console.log("listening to stream");
         stream.on('tweet', onTweet);
