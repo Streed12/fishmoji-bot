@@ -80,7 +80,7 @@ function onTweet(tweet, tag) {
         return;
     }
     if (regexFilter.test(tweet.text)) {
-        let hashTags = tweet.entities.hashtags;
+        var hashTags = tweet.entities.hashtags;
         var bfGood = false;
         hashTags.forEach(function(ht){
             var term = ht.text.toLowerCase();
