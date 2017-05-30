@@ -84,7 +84,7 @@ function onTweet(tweet) {
         var bfGood = false;
         hashTags.forEach(function(ht){
             var term = ht.text.toLowerCase();
-            if(term === 'fishing'){
+            if(term === 'bassfishing'){
                 bfGood = true;
                 console.log('GOOD', term);
             }
@@ -111,7 +111,7 @@ function onTweet(tweet) {
 // Function for listening to twitter streams and retweeting on demand.
 function listen(listMembers) {
     tu.filter({
-        track: '#fishing'
+        track: '#bassfishing'
     }, function(stream) {
         console.log("listening to stream");
         stream.on('tweet', onTweet);
