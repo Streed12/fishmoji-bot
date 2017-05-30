@@ -76,7 +76,7 @@ function onTweet(tweet) {
         // for 64bit ints.
         tu.retweet({
             id: tweet.id_strm,
-            text: tweet.text + '#fishing' + '#bassfishing'
+            text: tweet.text + ' #fishing ' + '#bassfishing'
         }, onReTweet);
     }
 }
