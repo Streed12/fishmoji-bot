@@ -18,7 +18,7 @@
   "devDependencies": {},
   "optionalDependencies": {},
   "engines": {
-    "node": "0.8.x",
+    "node": "6.10.x",
     "npm": "1.1.x"
   },
   "author": {
