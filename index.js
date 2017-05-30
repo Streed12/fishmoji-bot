@@ -93,7 +93,7 @@ function onTweet(tweet) {
         if(bfGood){
             console.log(tweet);
             tu.createFavorite({
-                id: tweet.id
+                id: tweet.id_str
             }, onFavorite);
         } 
         // if()
@@ -102,7 +102,7 @@ function onTweet(tweet) {
         //     // Note we're using the id_str property since javascript is not accurate
         //     // for 64bit ints.
         //     tu.retweet({
-        //         id: tweet.id_strm
+        //         id: tweet.id_str
         //     }, onReTweet);
         // }
     }
