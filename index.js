@@ -13,7 +13,7 @@ var config = {
     me: 'FishMojiApp', // The authorized account with a list to retweet.
     myList: 'Bass-pros-industry', // The list we want to retweet.
     regexFilter: '', // Accept only tweets matching this regex pattern.
-    regexReject: '', // AND reject any tweets matching this regex pattern.
+    regexReject: '(RT|@FishMojiApp)', // AND reject any tweets matching this regex pattern.
 
 
     keys: {
