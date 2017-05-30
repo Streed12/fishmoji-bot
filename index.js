@@ -63,7 +63,6 @@ function onFavorite(err) {
 
 // What to do when we get a tweet.
 function onTweet(tweet) {
-    console.log(tweet);
     // Reject the tweet if:
     //  1. it's flagged as a retweet
     //  2. it matches our regex rejection criteria
@@ -78,10 +77,10 @@ function onTweet(tweet) {
     }
     if (regexFilter.test(tweet.text)) {
 
-        let hashTags = tweet.entities.hashtags;
-        let bfGood = false;
+        var hashTags = tweet.entities.hashtags;
+        var bfGood = false;
         hashTags.forEach(ht => {
-            let term = ht.text.toLowerCase();
+            var term = ht.text.toLowerCase();
             if(term === 'bassfishing'){
                 bfGood = true;
             }
