@@ -75,7 +75,7 @@ function onTweet(tweet) {
         let hashTags = tweet.entities.hashtags;
         let bfGood = false;
         hashTags.forEach(ht => {
-            let term = ht.text.toLowerCase()
+            let term = ht.text.toLowerCase();
             if(term === 'bassfishing'){
                 bfGood = true;
             }
