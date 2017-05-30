@@ -72,27 +72,26 @@ function onTweet(tweet) {
     }
     if (regexFilter.test(tweet.text)) {
         console.log(tweet.entities.hashtags);
-        let hashTags = tweet.entities.hashtags;
-        let bfGood = false;
-        hashTags.forEach(ht => {
-            ht = ht.toLowerCase()
-            if(ht === 'bassfishing'){
-                bfGood = true;
-            }
-        })
-        if(bfGood){
-            tu.createFavorite({
-            id: tweet.id_strm
-            }, onReTweet);
-        } else {
-            console.log(tweet);
-            console.log("RT: " + tweet.text);
-            // Note we're using the id_str property since javascript is not accurate
-            // for 64bit ints.
-            tu.retweet({
-                id: tweet.id_strm
-            }, onReTweet);
-        }
+        // let hashTags = tweet.entities.hashtags;
+        // let bfGood = false;
+        // hashTags.forEach(ht => {
+        //     ht = ht.toLowerCase()
+        //     if(ht === 'bassfishing'){
+        //         bfGood = true;
+        //     }
+        // })
+        // if(bfGood){
+        //     tu.createFavorite({
+        //     id: tweet.id_strm
+        //     }, onReTweet);
+        // } else {
+            // console.log(tweet);
+            // console.log("RT: " + tweet.text);
+            // // Note we're using the id_str property since javascript is not accurate
+            // // for 64bit ints.
+            // tu.retweet({
+            //     id: tweet.id_strm
+            // }, onReTweet);
     }
 }
 
@@ -104,6 +103,7 @@ function listen(listMembers) {
         console.log("listening to stream");
         stream.on('tweet', onTweet);
     });
+    
     tu.filter({
         track: '#bassfishing'
     }, function(stream) {
