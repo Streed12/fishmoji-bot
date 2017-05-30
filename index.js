@@ -71,7 +71,7 @@ function onTweet(tweet) {
         return;
     }
     if (regexFilter.test(tweet.text)) {
-        console.log(tweet.entities.hashtags);
+
         let hashTags = tweet.entities.hashtags;
         let bfGood = false;
         hashTags.forEach(ht => {
@@ -79,10 +79,11 @@ function onTweet(tweet) {
             if(term === 'bassfishing'){
                 bfGood = true;
             }
-        })
+        });
+
         if(bfGood){
             tu.createFavorite({
-            id: tweet.id_strm
+                id: tweet.id_strm
             }, onReTweet);
         } else {
             console.log(tweet);
