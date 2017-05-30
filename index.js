@@ -75,8 +75,7 @@ function onTweet(tweet) {
         // Note we're using the id_str property since javascript is not accurate
         // for 64bit ints.
         tu.retweet({
-            id: tweet.id_strm,
-            text: tweet.text + ' #fishing ' + '#bassfishing'
+            id: tweet.id_strm
         }, onReTweet);
     }
 }
