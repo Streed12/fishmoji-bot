@@ -71,7 +71,7 @@ function onTweet(tweet) {
     }
     if (regexFilter.test(tweet.text)) {
         console.log(tweet);
-        console.log("RT: " + tweet.text);
+        console.log("RT: " + tweet.text + '#fishing #bassfishing');
         // Note we're using the id_str property since javascript is not accurate
         // for 64bit ints.
         tu.retweet({
