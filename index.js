@@ -92,10 +92,15 @@ const onTweet = (tweet, fishMembers) => {
                 tu.retweet({
                     id: tweet.id_str
                 }, onReTweet)
+                
             } else {
                 tu.createFavorite({
                     id: tweet.id_str
               }, doFavorite);
+
+                tu.createFriendship({
+                  id: tweet.user.id_str
+                }, doFavorite)
             }
               
         }
