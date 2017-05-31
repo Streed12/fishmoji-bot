@@ -16,14 +16,9 @@ var config = {
     regexReject: '(@)', // AND reject any tweets matching this regex pattern.
 
 
-    // keys: {
-    //     consumer_key: 'IpbOqTEAxBuZWjMgHMVrKGRhb',
-    //     consumer_secret: 'ffwKdzsvUGMmqHLM8EXrEEuurbLkZJFY8wOAcLRWe2GgtZWqPI',
-    //     access_token_key: '710987248464994305-ELnaxhD7nBLWxmoMECWOpPrFNRv7nLK',
-    //     access_token_secret: 'WfqfWsGatD3AO9y30xuWX1GG6pLToH2gCOzHaIdxYxP2x'
-    // },
+
     keys: {
-        consumer_key: '9SoZMVWpNArCsEwFxXZmtOrSO' process.env.TWITTER_CONSUMER_KEY,
+        consumer_key: process.env.TWITTER_CONSUMER_KEY,
         consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
         access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
         access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
