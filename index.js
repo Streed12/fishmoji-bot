@@ -48,7 +48,7 @@ function getListMembers(callback) {
 }
 
 // What to do after we retweet something.
-function doReTweet(err) {
+function onReTweet(err) {
     if(err) {
         console.error("retweeting failed :(");
         console.error(err);
@@ -67,34 +67,34 @@ function doFavorite(err) {
 }
 
 // What to do when we get a tweet.
-function onTweet(tweet) {
-    console.log('favorite', tweet)
-    // Reject the tweet if:
-    //  1. it's flagged as a retweet
-    //  2. it matches our regex rejection criteria
-    //  3. it doesn't match our regex acceptance filter
-    var regexReject = new RegExp(config.regexReject, 'i');
-    var regexFilter = new RegExp(config.regexFilter, 'i');
-    if (tweet.retweeted) {
-        return;
-    }
-    if (config.regexReject !== '' && regexReject.test(tweet.text)) {
-        return;
-    }
-    if (regexFilter.test(tweet.text)) {
-        console.log(tweet);
-        if(tweet.filter_level === 'low' &&
-           !tweet.in_reply_to_status_id &&
-           !tweet.in_reply_to_user_id &&
-            tweet.lang === 'en') {
-              tu.createFavorite({
-                    id: tweet.id_str
-              }, doFavorite);
-        }
-    }
-}
+// function onTweet(tweet) {
+//     console.log('favorite', tweet)
+//     // Reject the tweet if:
+//     //  1. it's flagged as a retweet
+//     //  2. it matches our regex rejection criteria
+//     //  3. it doesn't match our regex acceptance filter
+//     var regexReject = new RegExp(config.regexReject, 'i');
+//     var regexFilter = new RegExp(config.regexFilter, 'i');
+//     if (tweet.retweeted) {
+//         return;
+//     }
+//     if (config.regexReject !== '' && regexReject.test(tweet.text)) {
+//         return;
+//     }
+//     if (regexFilter.test(tweet.text)) {
+//         console.log(tweet);
+//         if(tweet.filter_level === 'low' &&
+//            !tweet.in_reply_to_status_id &&
+//            !tweet.in_reply_to_user_id &&
+//             tweet.lang === 'en') {
+//               tu.createFavorite({
+//                     id: tweet.id_str
+//               }, doFavorite);
+//         }
+//     }
+// }
 
-function onReTweet(tweet) {
+function onListTweet(tweet) {
     console.log('Retweet', tweet)
     // Reject the tweet if:
     //  1. it's flagged as a retweet
@@ -115,7 +115,9 @@ function onReTweet(tweet) {
       // for 64bit ints.
       tu.retweet({
         id: tweet.id_str
-      }, doReTweet);
+      }, onReTweet);
+    } else {
+       return; 
     }
 
 }
@@ -126,15 +128,15 @@ function listen(listMembers) {
         follow: listMembers
     }, function(stream) {
         console.log("listening to stream")
-        stream.on('tweet', onReTweet)
+        stream.on('tweet', onListTweet)
     });
 
-    tu.filter({
-        track: 'bassfishing, swimbait, bassmaster, fishing, FLWfishing'
-    }, function(stream) {
-        console.log("listening to stream");
-        stream.on('tweet', onTweet);
-    });
+    // tu.filter({
+    //     track: 'bassfishing, swimbait, bassmaster, FLWfishing'
+    // }, function(stream) {
+    //     console.log("listening to stream");
+    //     stream.on('tweet', onTweet);
+    // });
     
 }
 //Can add more filters / watchers here.
