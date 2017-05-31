@@ -13,7 +13,7 @@ let config = {
   me: 'FishMojiApp', // The authorized account with a list to retweet.
   list: 'Bass-SM', // The list we want to retweet.
   regexFilter: '', // Accept only tweets matching this regex pattern.
-  regexReject: '(@)', // AND reject any tweets matching this regex pattern.
+  regexReject: '(@|music|guitar|sex|viral)', // AND reject any tweets matching this regex pattern.
 
   keys: {
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -110,7 +110,7 @@ const onTweet = (tweet, fishMembers) => {
 const listen = (listMembers, usersList) => {
   tu.filter({
     follow: listMembers,
-    track: '#bassfishing, #basspro, #bassmaster, #flw, #tacklewarehouse, #swimbait'
+    track: ['#bassfishing', '#basspro', '#bassmaster', '#flw', '#tacklewarehouse', '#swimbait']
   }, function(stream) {
       console.log("listening to stream")
       stream.on('tweet', (tweet) => {
