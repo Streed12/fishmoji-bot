@@ -13,7 +13,7 @@ var config = {
     me: 'FishMojiApp', // The authorized account with a list to retweet.
     myList: 'Bass-pros-industry', // The list we want to retweet.
     regexFilter: '', // Accept only tweets matching this regex pattern.
-    regexReject: '(RT|@)', // AND reject any tweets matching this regex pattern.
+    regexReject: '(@)', // AND reject any tweets matching this regex pattern.
 
 
     keys: {
@@ -52,6 +52,8 @@ function onReTweet(err) {
     if(err) {
         console.error("retweeting failed :(");
         console.error(err);
+    } else {
+        console.log('success retweet')
     }
 }
 function onFavorite(err) {
@@ -80,50 +82,45 @@ function onTweet(tweet, tag) {
         return;
     }
     if (regexFilter.test(tweet.text)) {
-        var hashTags = tweet.entities.hashtags;
-        var bfGood = false;
-        hashTags.forEach(function(ht){
-            var term = ht.text.toLowerCase();
-            if(term === 'bassfishing'){
-                bfGood = true;
-                console.log('GOOD', term);
+        if(tweet.filter_level === 'low' &&
+            tweet.in_reply_to_status_id === null &&
+            tweet.in_reply_to_user_id === null &&
+            tweet.lang === 'en') {
+            if(tag){
+              tu.createFavorite({
+                    id: tweet.id_str
+              }, onFavorite);
             }
-        });
-
-        if(bfGood){
-            console.log(tweet);
-            tu.createFavorite({
+            if(!tag){
+              console.log(tweet);
+              console.log("RT: " + tweet.text);
+              // Note we're using the id_str property since javascript is not accurate
+              // for 64bit ints.
+              tu.retweet({
                 id: tweet.id_str
-            }, onFavorite);
-        }
-        if(!tag){
-            console.log(tweet);
-            console.log("RT: " + tweet.text);
-            // Note we're using the id_str property since javascript is not accurate
-            // for 64bit ints.
-            tu.retweet({
-                id: tweet.id_str
-            }, onReTweet);
+              }, onReTweet);
+            }
         }
     }
+
 }
 
 // Function for listening to twitter streams and retweeting on demand.
 function listen(listMembers) {
     tu.filter({
-        track: '#bassfishing'
+        follow: listMembers
     }, function(stream) {
-        console.log("listening to stream");
-        var tag = true;
         stream.on('tweet', function (tweet){
-            onTweet(tweet, tag);
+            onTweet(tweet, false);
         })
     });
     tu.filter({
-        follow: listMembers
+        track: 'bassfishing, swimbait, bassmaster'
     }, function(stream) {
         console.log("listening to stream");
-        stream.on('tweet', onTweet);
+        stream.on('tweet', function (tweet){
+            onTweet(tweet, true);
+        })
     });
     
 }
