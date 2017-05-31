@@ -1,6 +1,6 @@
 // START HEROKU SETUP
-var express = require("express");
-var app = express();
+let express = require("express");
+let app = express();
 app.get('/', function(req, res){ res.send('The robot is happily running.'); });
 app.listen(process.env.PORT || 5000);
 // END HEROKU SETUP
@@ -9,7 +9,7 @@ app.listen(process.env.PORT || 5000);
 // Listbot config
 //
 // Config.keys uses environment variables so sensitive info is not in the repo.
-var config = {
+let config = {
     me: 'FishMojiApp', // The authorized account with a list to retweet.
     list: 'Bass-SM', // The list we want to retweet.
     regexFilter: '', // Accept only tweets matching this regex pattern.
@@ -25,18 +25,18 @@ var config = {
 
 
 // Get the members of our list, and pass them into a callback function.
-function getListMembers(callback) {
+const getListMembers = (callback) => {
     let bassMembers = new Map();
     bassMembers.clear();
-    var memberIDs = [];
+    let memberIDs = [];
 
     tu.listMembers({owner_screen_name: config.me,
         slug: config.list
     },
 
-    function(error, data){
+    (error, data) => {
         if (!error) {
-            for (var i = 0; i < data.users.length; i++) {
+            for (let i = 0; i < data.users.length; i++) {
                 bassMembers.set(data.users[i].id_str, data.users[i].screen_name);
                 memberIDs.push(data.users[i].id_str);
             }
@@ -51,7 +51,7 @@ function getListMembers(callback) {
 }
 
 // What to do after we retweet something.
-function onReTweet(err) {
+const onReTweet = (err) => {
     if(err) {
         console.error("retweeting failed :(");
         console.error(err);
@@ -59,7 +59,7 @@ function onReTweet(err) {
         console.log('success retweet')
     }
 }
-function doFavorite(err) {
+const doFavorite = (err) => {
     if(err) {
         console.error("Favorite failed :(");
         console.error(err);
@@ -70,13 +70,13 @@ function doFavorite(err) {
 }
 
 // What to do when we get a tweet.
-function onTweet(tweet, fishMembers) {
+const onTweet = (tweet, fishMembers) => {
     // Reject the tweet if:
     //  1. it's flagged as a retweet
     //  2. it matches our regex rejection criteria
     //  3. it doesn't match our regex acceptance filter
-    var regexReject = new RegExp(config.regexReject, 'i');
-    var regexFilter = new RegExp(config.regexFilter, 'i');
+    let regexReject = new RegExp(config.regexReject, 'i');
+    let regexFilter = new RegExp(config.regexFilter, 'i');
     if (tweet.retweeted) {
         return;
     }
@@ -103,7 +103,7 @@ function onTweet(tweet, fishMembers) {
 }
 
 // Function for listening to twitter streams and retweeting on demand.
-function listen(listMembers, usersList) {
+const listen = (listMembers, usersList) => {
     tu.filter({
         follow: listMembers,
         track: '#fishing, #bassfishing'
@@ -120,7 +120,7 @@ function listen(listMembers, usersList) {
 
 // The application itself.
 // Use the tuiter node module to get access to twitter.
-var tu = require('tuiter')(config.keys);
+let tu = require('tuiter')(config.keys);
 
 // Run the application. The callback in getListMembers ensures we get our list
 // of twitter streams before we attempt to listen to them via the twitter API.
