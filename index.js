@@ -67,7 +67,8 @@ function onFavorite(err) {
 }
 
 // What to do when we get a tweet.
-function onTweet(tweet, tag) {
+function onTweet(tweet) {
+    console.log('favorite', tweet)
     // Reject the tweet if:
     //  1. it's flagged as a retweet
     //  2. it matches our regex rejection criteria
@@ -86,21 +87,34 @@ function onTweet(tweet, tag) {
             tweet.in_reply_to_status_id === null &&
             tweet.in_reply_to_user_id === null &&
             tweet.lang === 'en') {
-            if(tag){
               tu.createFavorite({
                     id: tweet.id_str
-              }, onFavorite);
-            }
-            if(!tag){
-              console.log(tweet);
-              console.log("RT: " + tweet.text);
-              // Note we're using the id_str property since javascript is not accurate
-              // for 64bit ints.
-              tu.retweet({
-                id: tweet.id_str
-              }, onReTweet);
-            }
+              }, doFavorite);
         }
+    }
+}
+function onReTweet(tweet) {
+    console.log('Retweet', tweet)
+    // Reject the tweet if:
+    //  1. it's flagged as a retweet
+    //  2. it matches our regex rejection criteria
+    //  3. it doesn't match our regex acceptance filter
+    var regexReject = new RegExp(config.regexReject, 'i');
+    var regexFilter = new RegExp(config.regexFilter, 'i');
+    if (tweet.retweeted) {
+        return;
+    }
+    if (config.regexReject !== '' && regexReject.test(tweet.text)) {
+        return;
+    }
+    if (regexFilter.test(tweet.text)) {
+      console.log(tweet);
+      console.log("RT: " + tweet.text);
+      // Note we're using the id_str property since javascript is not accurate
+      // for 64bit ints.
+      tu.retweet({
+        id: tweet.id_str
+      }, doReTweet);
     }
 
 }
@@ -110,17 +124,14 @@ function listen(listMembers) {
     tu.filter({
         follow: listMembers
     }, function(stream) {
-        stream.on('tweet', function (tweet){
-            onTweet(tweet, false);
-        })
+        stream.on('tweet', onReTweet)
     });
+
     tu.filter({
         track: 'bassfishing, swimbait, bassmaster, tacklewarehouse, FLWfishing'
     }, function(stream) {
         console.log("listening to stream");
-        stream.on('tweet', function (tweet){
-            onTweet(tweet, true);
-        })
+        stream.on('tweet', onTweet);
     });
     
 }
