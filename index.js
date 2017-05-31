@@ -11,11 +11,9 @@ app.listen(process.env.PORT || 5000);
 // Config.keys uses environment variables so sensitive info is not in the repo.
 var config = {
     me: 'FishMojiApp', // The authorized account with a list to retweet.
-    list: 'BassAnglers', // The list we want to retweet.
+    list: 'Bass-SM', // The list we want to retweet.
     regexFilter: '', // Accept only tweets matching this regex pattern.
     regexReject: '(@)', // AND reject any tweets matching this regex pattern.
-
-
 
     keys: {
         consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -91,49 +89,17 @@ function onTweet(tweet, fishMembers) {
            tweet.in_reply_to_user_id === null &&
             tweet.lang === 'en') {
             if(fishMembers.has(tweet.user.id_str)){
-                console.log(tweet)
                 tu.retweet({
                     id: tweet.id_str
                 }, onReTweet)
             } else {
-                console.log('fave')
                 tu.createFavorite({
                     id: tweet.id_str
               }, doFavorite);
             }
-              // tu.createFavorite({
-              //       id: tweet.id_str
-              // }, doFavorite);
               
         }
     }
-}
-
-function onListTweet(tweet) {
-    // Reject the tweet if:
-    //  1. it's flagged as a retweet
-    //  2. it matches our regex rejection criteria
-    //  3. it doesn't match our regex acceptance filter
-    var regexReject = new RegExp(config.regexReject, 'i');
-    var regexFilter = new RegExp(config.regexFilter, 'i');
-    if (tweet.retweeted) {
-        return;
-    }
-    if (config.regexReject !== '' && regexReject.test(tweet.text)) {
-        return;
-    }
-    if (regexFilter.test(tweet.text)) {
-      console.log(tweet);
-      console.log("RT: " + tweet.text);
-      // Note we're using the id_str property since javascript is not accurate
-      // for 64bit ints.
-      tu.retweet({
-        id: tweet.id_str
-      }, onReTweet);
-    } else {
-       return; 
-    }
-
 }
 
 // Function for listening to twitter streams and retweeting on demand.
@@ -147,14 +113,6 @@ function listen(listMembers, usersList) {
             onTweet(tweet, usersList)
         });
     });
-
-    // tu.filter({
-    //     track: 'fishing, bassfishing'
-    // }, function(stream) {
-    //     console.log("listening to stream");
-    //     stream.on('tweet', onTweet);
-    // });
-    
 }
 
 //Can add more filters / watchers here.
