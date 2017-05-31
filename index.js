@@ -106,7 +106,7 @@ const onTweet = (tweet, fishMembers) => {
 const listen = (listMembers, usersList) => {
     tu.filter({
         follow: listMembers,
-        track: '#fishing, #bassfishing'
+        track: '#bassfishing, #basspro, #bassmaster, #flw, #tacklewarehouse, #swimbait'
     }, function(stream) {
         console.log("listening to stream")
         stream.on('tweet', (tweet) => {
