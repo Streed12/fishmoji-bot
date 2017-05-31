@@ -48,7 +48,7 @@ function getListMembers(callback) {
 }
 
 // What to do after we retweet something.
-function onReTweet(err) {
+function doReTweet(err) {
     if(err) {
         console.error("retweeting failed :(");
         console.error(err);
@@ -56,7 +56,7 @@ function onReTweet(err) {
         console.log('success retweet')
     }
 }
-function onFavorite(err) {
+function doFavorite(err) {
     if(err) {
         console.error("Favorite failed :(");
         console.error(err);
@@ -84,8 +84,8 @@ function onTweet(tweet) {
     if (regexFilter.test(tweet.text)) {
         console.log(tweet);
         if(tweet.filter_level === 'low' &&
-            tweet.in_reply_to_status_id === null &&
-            tweet.in_reply_to_user_id === null &&
+           !tweet.in_reply_to_status_id &&
+           !tweet.in_reply_to_user_id &&
             tweet.lang === 'en') {
               tu.createFavorite({
                     id: tweet.id_str
@@ -93,6 +93,7 @@ function onTweet(tweet) {
         }
     }
 }
+
 function onReTweet(tweet) {
     console.log('Retweet', tweet)
     // Reject the tweet if:
@@ -124,11 +125,12 @@ function listen(listMembers) {
     tu.filter({
         follow: listMembers
     }, function(stream) {
+        console.log("listening to stream")
         stream.on('tweet', onReTweet)
     });
 
     tu.filter({
-        track: 'bassfishing, swimbait, bassmaster, tacklewarehouse, FLWfishing'
+        track: 'bassfishing, swimbait, bassmaster, fishing, FLWfishing'
     }, function(stream) {
         console.log("listening to stream");
         stream.on('tweet', onTweet);
