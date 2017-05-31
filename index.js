@@ -115,7 +115,7 @@ function listen(listMembers) {
         })
     });
     tu.filter({
-        track: 'bassfishing, swimbait, bassmaster, #fishing, #Fishing'
+        track: 'bassfishing, swimbait, bassmaster, tacklewarehouse, FLWfishing'
     }, function(stream) {
         console.log("listening to stream");
         stream.on('tweet', function (tweet){
