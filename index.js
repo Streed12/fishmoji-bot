@@ -68,7 +68,6 @@ function onFavorite(err) {
 
 // What to do when we get a tweet.
 function onTweet(tweet, tag) {
-    console.log(tweet);
     // Reject the tweet if:
     //  1. it's flagged as a retweet
     //  2. it matches our regex rejection criteria
@@ -82,6 +81,7 @@ function onTweet(tweet, tag) {
         return;
     }
     if (regexFilter.test(tweet.text)) {
+        console.log(tweet);
         if(tweet.filter_level === 'low' &&
             tweet.in_reply_to_status_id === null &&
             tweet.in_reply_to_user_id === null &&
@@ -115,7 +115,7 @@ function listen(listMembers) {
         })
     });
     tu.filter({
-        track: 'bassfishing, swimbait, bassmaster'
+        track: 'bassfishing, swimbait, bassmaster, #fishing, #Fishing'
     }, function(stream) {
         console.log("listening to stream");
         stream.on('tweet', function (tweet){
