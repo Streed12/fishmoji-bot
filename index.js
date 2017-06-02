@@ -56,7 +56,7 @@ const onTweet = (tweet, listMembers) => {
   //Destructure the tweet info we want
   const { id_str, user, text } = tweet;
   //Destructure the tweet properties we want to check as filters
-  const { in_reply_to_status_id: inReply, in_reply_to_user_id: toUser, retweeted, filter_level, lang } = tweet;
+  const { in_reply_to_status_id: inReply, in_reply_to_user_id: replyUser, retweeted, filter_level, lang } = tweet;
 
   // Reject the tweet if:
   //  1. it's flagged as a retweet
