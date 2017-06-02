@@ -30,7 +30,7 @@ const getListMembers = (callback) => {
           listMembers.set(data.users[i].id_str, data.users[i].screen_name);
           memberIDs.following.push(data.users[i].id_str);
         }
-        // This callback is designed to run listen(memberIDs).
+        // This callback is designed to run listen(memberIDs and listMembers).
         callback(memberIDs, listMembers);
       } else {
         console.log(error);
@@ -63,9 +63,9 @@ const doFavorite = (err) => {
 // What to do when we get a tweet.
 const onTweet = (tweet, blocked, listMembers) => {
 
-  //Destructure the tweet info we want
+  // Destructure the tweet info we want
   const { id_str, user, text } = tweet;
-  //Destructure the tweet properties we want to check as filters
+  // Destructure the tweet properties we want to check as filters
   const { in_reply_to_status_id: inReply, in_reply_to_user_id: replyUser, retweeted, filter_level, lang } = tweet;
   // Reject the tweet if:
   //  1. it's flagged as a retweet
@@ -74,15 +74,14 @@ const onTweet = (tweet, blocked, listMembers) => {
   let regexReject = new RegExp(config.regexReject, 'i');
   let regexFilter = new RegExp(config.regexFilter, 'i');
   
-
+  // Ignores tweets from blocked users on account
   if(_.includes(blocked, user.id_str)){
-    console.log('blocked', user.screen_name)
     return;
   }
   if (retweeted || inReply || replyUser || lang !== 'en' || filter_level !== 'low') {
       return;
   }
-  if (config.regexReject !== '' && regexReject.test(tweet.text)) {
+  if (config.regexReject !== '' && regexReject.test(text)) {
       return;
   }
 
@@ -96,11 +95,13 @@ const onTweet = (tweet, blocked, listMembers) => {
       tu.createFavorite({
         id: id_str
       }, doFavorite);
+      
+      // If we wanted to add friends / follow users when we liked the tweet.
 
-      tu.createFriendship({
-        id: user.id_str,
-        follow: true
-      }, doFavorite)
+      // tu.createFriendship({
+      //   id: user.id_str,
+      //   follow: true
+      // }, doFavorite)
     }   
   } 
 }
@@ -109,7 +110,7 @@ const onTweet = (tweet, blocked, listMembers) => {
 const listen = (memberIDs, listMembers) => {
   let { blocked, following } = memberIDs
   tu.filter({
-    follow: memberIDs.following,
+    follow: following,
     track: trackTerms
   }, function(stream) {
       console.log("listening to stream")
@@ -118,9 +119,6 @@ const listen = (memberIDs, listMembers) => {
       });
   });
 }
-
-//Can add more filters / watchers here.
-
 
 // The application itself.
 // Use the tuiter node module to get access to twitter.
