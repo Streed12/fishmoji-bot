@@ -67,7 +67,6 @@ const onTweet = (tweet, blocked, listMembers) => {
   const { id_str, user, text } = tweet;
   //Destructure the tweet properties we want to check as filters
   const { in_reply_to_status_id: inReply, in_reply_to_user_id: replyUser, retweeted, filter_level, lang } = tweet;
-  console.log(blocked, user.id_str, _.includes(blocked, user.id_str), blocked.length)
   // Reject the tweet if:
   //  1. it's flagged as a retweet
   //  2. it matches our regex rejection criteria
