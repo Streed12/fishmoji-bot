@@ -53,7 +53,6 @@ const doFavorite = (err) => {
 
 // What to do when we get a tweet.
 const onTweet = (tweet, listMembers) => {
-  console.log(tweet)
   //Destructure the tweet info we want
   const { id_str, user, text } = tweet;
   //Destructure the tweet properties we want to check as filters
