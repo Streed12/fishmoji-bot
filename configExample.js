@@ -1,9 +1,9 @@
 module.exports = {
   config: {
-    me: 'FishMojiApp', // The authorized account with a list to retweet.
-    list: 'Bass-SM', // The list we want to retweet.
+    me: '', // The authorized account with a list to retweet.
+    list: '', // The list we want to retweet.
     regexFilter: '', // Accept only tweets matching this regex pattern.
-    regexReject: '(@|music|guitar|sex|viral|follow)', // AND reject any tweets matching this regex pattern. Can add many more.
+    regexReject: '(@|sex|viral|follow)', // AND reject any tweets matching this regex pattern. Can add many more.
 
     keys: {
       consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -12,5 +12,5 @@ module.exports = {
       access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
     }
   },
-  trackTerms: ['#bassfishing', '#basspro', 'fishing', '#bassmaster', '#fishing', '#flwfishing', '#tacklewarehouse', '#swimbait']
+  trackTerms: ['ExampleTerm']
 };

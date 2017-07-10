@@ -9,14 +9,9 @@ const base64Async = (url) => {
   });
 };
 
-const imgToBin = async (url) => {
+module.exports = async (url) => {
   const b64 = await base64Async(url);
   const b64Stripped = b64.replace(/^data:image\/[a-z]+;base64,/, "");
-  const imgBinData = Buffer.from(b64Stripped, 'base64');
-  return imgBinData;
+  return b64Stripped;
 };
 
-
-module.exports = {
-  imgToBin
-}
