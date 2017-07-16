@@ -102,7 +102,7 @@ const onTweet = async (tweet, blocked, listMembers) => {
       try {
         let { status, type, message, info } = await imgFilter(media_url);
         if(status === 'success') {
-          let imgDaża = await imgToBin(media_url);
+          let imgData = await imgToBin(media_url);
 
           twitter.post('media/upload', {media_data: imgData}, (error, media, response) => {
             if(error) console.log('ERROR', error)
